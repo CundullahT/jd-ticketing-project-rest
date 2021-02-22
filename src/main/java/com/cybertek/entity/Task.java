@@ -1,8 +1,8 @@
 package com.cybertek.entity;
 
-import com.cybertek.dto.ProjectDTO;
-import com.cybertek.dto.UserDTO;
+
 import com.cybertek.enums.Status;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,4 +34,5 @@ public class Task extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
+
 }
