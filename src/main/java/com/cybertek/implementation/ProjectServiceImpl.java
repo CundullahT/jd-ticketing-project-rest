@@ -90,7 +90,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectRepository.findByProjectCode(code);
 
         if (project == null) {
-            throw new TicketingProjectException("This project doesn't exist");
+            throw new TicketingProjectException("This project does not exist");
         }
 
         project.setIsDeleted(true);
