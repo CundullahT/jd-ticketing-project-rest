@@ -5,7 +5,6 @@ import com.cybertek.enums.Status;
 import com.cybertek.service.ProjectService;
 import com.cybertek.service.TaskService;
 import com.cybertek.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/task")
@@ -31,8 +28,6 @@ public class TaskController {
         this.userService = userService;
     }
 
-    //
-
     @GetMapping("/create")
     public String createTask(Model model){
 
@@ -42,13 +37,12 @@ public class TaskController {
         model.addAttribute("tasks",taskService.listAllTasks());
 
         return "task/create";
+
     }
 
     @PostMapping("/create")
     public String insertTask(Model model,TaskDTO task){
-
         taskService.save(task);
-
         return "redirect:/task/create";
     }
 
@@ -67,13 +61,12 @@ public class TaskController {
         model.addAttribute("tasks",taskService.listAllTasks());
 
         return "task/update";
+
     }
 
     @PostMapping("/update/{id}")
     public String updateTask(TaskDTO task){
-
         taskService.update(task);
-
         return "redirect:/task/create";
     }
 
@@ -92,7 +85,6 @@ public class TaskController {
 
         TaskDTO task = taskService.findById(id);
         List<TaskDTO> tasks = taskService.listAllTasksByStatusIsNot(Status.COMPLETE);
-
 
         model.addAttribute("task",task);
         model.addAttribute("users",userService.listAllByRole("employee"));
@@ -115,26 +107,9 @@ public class TaskController {
 
         List<TaskDTO> tasks = taskService.listAllTasksByStatus(Status.COMPLETE);
         model.addAttribute("tasks",tasks);
+
         return "task/employee-archive";
+
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

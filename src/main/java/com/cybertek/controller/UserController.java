@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +46,7 @@ public class UserController {
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
     @PostMapping("/create-user")
     @Operation(summary = "Create new account")
+    @PreAuthorize("hasAuthority('Admin')")
     private ResponseEntity<ResponseWrapper> doRegister(@RequestBody UserDTO userDTO) throws TicketingProjectException {
 
         UserDTO createdUser = userService.save(userDTO);
