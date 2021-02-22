@@ -67,7 +67,7 @@ public class UserController {
 
     @GetMapping("/{username}")
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
-    @Operation(summary = "Read User By Id")
+    @Operation(summary = "Read User By Username")
     public ResponseEntity<ResponseWrapper> readByUsername(@PathVariable("username") String username){
         UserDTO user = userService.findByUserName(username);
         return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved user", user));
