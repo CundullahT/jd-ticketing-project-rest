@@ -18,10 +18,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -43,11 +42,11 @@ public class UserController {
         this.confirmationTokenService = confirmationTokenService;
     }
 
-    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
     @PostMapping("/create-user")
-    @Operation(summary = "Create new account")
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
+    @Operation(summary = "Create New Account")
     @PreAuthorize("hasAuthority('Admin')")
-    private ResponseEntity<ResponseWrapper> doRegister(@RequestBody UserDTO userDTO) throws TicketingProjectException {
+    public ResponseEntity<ResponseWrapper> doRegister(@RequestBody UserDTO userDTO) throws TicketingProjectException {
 
         UserDTO createdUser = userService.save(userDTO);
 
@@ -55,6 +54,15 @@ public class UserController {
 
         return ResponseEntity.ok(new ResponseWrapper("User has been created!", createdUser));
 
+    }
+
+    @GetMapping()
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
+    @Operation(summary = "Read All Users")
+    @PreAuthorize("hasAuthority('Admin')")
+    public ResponseEntity<ResponseWrapper> readAll(){
+        List<UserDTO> result = userService.listAllUsers();
+        return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved users", result));
     }
 
     private MailDTO createEmail(UserDTO userDTO) {
