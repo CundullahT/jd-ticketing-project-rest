@@ -7,8 +7,6 @@ import com.cybertek.entity.User;
 import com.cybertek.enums.Status;
 import com.cybertek.exception.TicketingProjectException;
 import com.cybertek.mapper.MapperUtil;
-import com.cybertek.mapper.ProjectMapper;
-import com.cybertek.mapper.UserMapper;
 import com.cybertek.repository.ProjectRepository;
 import com.cybertek.service.ProjectService;
 import com.cybertek.service.TaskService;
