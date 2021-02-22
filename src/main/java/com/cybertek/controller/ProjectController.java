@@ -82,4 +82,13 @@ public class ProjectController {
         return ResponseEntity.ok(new ResponseWrapper("Project is successfully updated (completed)", projectDTO));
     }
 
+    @GetMapping("/details")
+    @Operation(summary = "Read All Projects Details")
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
+    @PreAuthorize("hasAuthority('Manager')")
+    public ResponseEntity<ResponseWrapper> readAllProjectDetails() {
+        List<ProjectDTO> projectDTOs = projectService.listAllProjectDetails();
+        return ResponseEntity.ok(new ResponseWrapper("Projects are retrieved with details", projectDTOs));
+    }
+
 }
