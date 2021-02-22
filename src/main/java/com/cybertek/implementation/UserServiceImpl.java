@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         User foundUser = userRepository.findByUserName(dto.getUserName());
 
         if (foundUser != null) {
-            throw new TicketingProjectException("User already exists");
+            throw new TicketingProjectException("User Already Exists");
         }
 
         User user = mapperUtil.convert(dto, new User());
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (!checkIfUserCanBeDeleted(user)) {
-            throw new TicketingProjectException("User can not be deleted. It is linked by a project ot task");
+            throw new TicketingProjectException("User can not be deleted. It is linked by a project or task");
         }
 
         user.setUserName(user.getUserName() + "-" + user.getId());

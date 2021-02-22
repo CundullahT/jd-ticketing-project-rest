@@ -81,6 +81,15 @@ public class UserController {
         return ResponseEntity.ok(new ResponseWrapper("Successfully updated", updatedUser));
     }
 
+    @DeleteMapping("/{username}")
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
+    @Operation(summary = "Delete User")
+    @PreAuthorize("hasAuthority('Admin')")
+    public ResponseEntity<ResponseWrapper> deleteUser(@PathVariable("username") String username) throws TicketingProjectException {
+        userService.delete(username);
+        return ResponseEntity.ok(new ResponseWrapper("Successfully deleted"));
+    }
+
     private MailDTO createEmail(UserDTO userDTO) {
 
         User user = mapperUtil.convert(userDTO, new User());
