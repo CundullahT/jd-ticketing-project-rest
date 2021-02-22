@@ -122,11 +122,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectDTO> listAllProjectDetails() {
+    public List<ProjectDTO> listAllProjectDetails() throws TicketingProjectException {
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String id = SecurityContextHolder.getContext().getAuthentication().getName();
+        Long currentId = Long.parseLong(id);
 
-        UserDTO currentUserDTO = userService.findByUserName(username);
+        UserDTO currentUserDTO = userService.findById(currentId);
         User user = mapperUtil.convert(currentUserDTO, new User());
         List<Project> list = projectRepository.findAllByAssignedManager(user);
 

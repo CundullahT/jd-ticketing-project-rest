@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,6 +40,19 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> listAllUsers() {
         List<User> list = userRepository.findAll(Sort.by("firstName"));
         return list.stream().map(obj -> mapperUtil.convert(obj, new UserDTO())).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDTO findById(Long id) throws TicketingProjectException {
+
+        User user = userRepository.findById(id).orElse(null);
+
+        if (user == null) {
+            throw new TicketingProjectException("This User Does Not Exist");
+        }
+
+        return mapperUtil.convert(user, new UserDTO());
+
     }
 
     @Override

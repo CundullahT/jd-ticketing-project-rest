@@ -10,6 +10,8 @@ public interface UserService {
 
     List<UserDTO> listAllUsers();
 
+    UserDTO findById(Long id) throws TicketingProjectException;
+
     UserDTO findByUserName(String username);
 
     UserDTO save(UserDTO dto) throws TicketingProjectException;
