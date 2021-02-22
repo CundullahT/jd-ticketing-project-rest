@@ -16,7 +16,7 @@ public interface ProjectService {
 
     ProjectDTO update(ProjectDTO dto) throws TicketingProjectException;
 
-    void delete(String code);
+    void delete(String code) throws TicketingProjectException;
 
     void complete(String projectCode);
 

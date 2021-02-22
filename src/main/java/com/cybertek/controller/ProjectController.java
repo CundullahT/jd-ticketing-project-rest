@@ -64,4 +64,13 @@ public class ProjectController {
         return ResponseEntity.ok(new ResponseWrapper("Project is successfully created", updatedProject));
     }
 
+    @DeleteMapping("/{projectCode}")
+    @Operation(summary = "Delete Project")
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
+    @PreAuthorize("hasAnyAuthority('Admin', 'Manager')")
+    public ResponseEntity<ResponseWrapper> deleteProject(@PathVariable("projectCode") String projectCode) throws TicketingProjectException {
+        projectService.delete(projectCode);
+        return ResponseEntity.ok(new ResponseWrapper("Project is successfully deleted"));
+    }
+
 }

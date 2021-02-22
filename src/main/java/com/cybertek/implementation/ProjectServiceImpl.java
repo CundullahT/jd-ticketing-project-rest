@@ -85,12 +85,17 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void delete(String code) {
+    public void delete(String code) throws TicketingProjectException {
 
         Project project = projectRepository.findByProjectCode(code);
-        project.setIsDeleted(true);
 
+        if (project == null) {
+            throw new TicketingProjectException("This project doesn't exist");
+        }
+
+        project.setIsDeleted(true);
         project.setProjectCode(project.getProjectCode() + "-" + project.getId());
+
         projectRepository.save(project);
 
         taskService.deleteByProject(mapperUtil.convert(project, new ProjectDTO()));
