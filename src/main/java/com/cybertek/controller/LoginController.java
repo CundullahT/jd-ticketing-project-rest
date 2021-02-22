@@ -66,18 +66,6 @@ public class LoginController {
 
     }
 
-    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
-    @PostMapping("/create-user")
-    @Operation(summary = "Create new account")
-    private ResponseEntity<ResponseWrapper> doRegister(@RequestBody UserDTO userDTO) throws TicketingProjectException {
-
-        UserDTO createdUser = userService.save(userDTO);
-
-        sendEmail(createEmail(createdUser));
-
-        return ResponseEntity.ok(new ResponseWrapper("User has been created!", createdUser));
-    }
-
     @DefaultExceptionMessage(defaultMessage = "Failed to confirm email, please try again!")
     @GetMapping("/confirmation")
     @Operation(summary = "Confirm account")
@@ -88,37 +76,6 @@ public class LoginController {
         confirmationTokenService.delete(confirmationToken);
 
         return ResponseEntity.ok(new ResponseWrapper("User has been confirmed!", confirmUser));
-
-    }
-
-    private MailDTO createEmail(UserDTO userDTO) {
-
-        User user = mapperUtil.convert(userDTO, new User());
-
-        ConfirmationToken confirmationToken = new ConfirmationToken(user);
-        confirmationToken.setIsDeleted(false);
-
-        ConfirmationToken createdConfirmationToken = confirmationTokenService.save(confirmationToken);
-
-        return MailDTO
-                .builder()
-                .emailTo(user.getUserName())
-                .token(createdConfirmationToken.getToken())
-                .subject("Confirm Registration")
-                .message("To confirm your account, please click here:")
-                .url(BASE_URL + "/confirmation?token=")
-                .build();
-
-    }
-
-    private void sendEmail(MailDTO mailDTO) {
-
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(mailDTO.getEmailTo());
-        mailMessage.setSubject(mailDTO.getSubject());
-        mailMessage.setText(mailDTO.getMessage() + mailDTO.getUrl() + mailDTO.getToken());
-
-        confirmationTokenService.sendEmail(mailMessage);
 
     }
 
