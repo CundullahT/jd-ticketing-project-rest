@@ -2,7 +2,9 @@ package com.cybertek.controller;
 
 import com.cybertek.annotation.DefaultExceptionMessage;
 import com.cybertek.dto.ProjectDTO;
+import com.cybertek.entity.Project;
 import com.cybertek.entity.ResponseWrapper;
+import com.cybertek.exception.TicketingProjectException;
 import com.cybertek.service.ProjectService;
 import com.cybertek.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,6 +44,15 @@ public class ProjectController {
     public ResponseEntity<ResponseWrapper> readByProjectCode(@PathVariable("projectCode") String projectCode){
         ProjectDTO projectDTO = projectService.getByProjectCode(projectCode);
         return ResponseEntity.ok(new ResponseWrapper("Project is retrieved", projectDTO));
+    }
+
+    @PostMapping
+    @Operation(summary = "Create Project")
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
+    @PreAuthorize("hasAnyAuthority('Admin', 'Manager')")
+    public ResponseEntity<ResponseWrapper> create(@RequestBody ProjectDTO projectDTO) throws TicketingProjectException {
+        ProjectDTO createdProject = projectService.save(projectDTO);
+        return ResponseEntity.ok(new ResponseWrapper("Project is successfully created", createdProject));
     }
 
 }
