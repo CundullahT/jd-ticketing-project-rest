@@ -30,6 +30,7 @@ public class OpenApiConfig {
                 .addSecuritySchemes("bearer-jwt",securitySchemeItem))
                 .info(infoVersion)
                 .addSecurityItem(securityItem);
+
     }
 
 }
