@@ -128,8 +128,14 @@ public class ProjectServiceImpl implements ProjectService {
         Long currentId = Long.parseLong(id);
 
         UserDTO currentUserDTO = userService.findById(currentId);
+
         User user = mapperUtil.convert(currentUserDTO, new User());
+
         List<Project> list = projectRepository.findAllByAssignedManager(user);
+
+        if (list.size() == 0) {
+            throw new TicketingProjectException("This Manager Does Not Have Any Project Assigned");
+        }
 
         return list.stream().map(project -> {
             ProjectDTO obj = mapperUtil.convert(project, new ProjectDTO());
