@@ -68,15 +68,19 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void update(ProjectDTO dto) {
+    public ProjectDTO update(ProjectDTO dto) throws TicketingProjectException {
 
         Project project = projectRepository.findByProjectCode(dto.getProjectCode());
+
+        if (project == null) {
+            throw new TicketingProjectException("Project Does Not Exist");
+        }
+
         Project convertedProject = mapperUtil.convert(dto, new Project());
 
-        convertedProject.setId(project.getId());
-        convertedProject.setProjectStatus(project.getProjectStatus());
+        Project updatedProject = projectRepository.save(convertedProject);
 
-        projectRepository.save(convertedProject);
+        return mapperUtil.convert(updatedProject, new ProjectDTO());
 
     }
 

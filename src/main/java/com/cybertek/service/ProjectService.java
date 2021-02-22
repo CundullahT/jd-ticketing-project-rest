@@ -14,7 +14,7 @@ public interface ProjectService {
 
     ProjectDTO save(ProjectDTO dto) throws TicketingProjectException;
 
-    void update(ProjectDTO dto);
+    ProjectDTO update(ProjectDTO dto) throws TicketingProjectException;
 
     void delete(String code);
 

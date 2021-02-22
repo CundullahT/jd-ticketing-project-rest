@@ -55,4 +55,13 @@ public class ProjectController {
         return ResponseEntity.ok(new ResponseWrapper("Project is successfully created", createdProject));
     }
 
+    @PutMapping
+    @Operation(summary = "Update Project")
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
+    @PreAuthorize("hasAnyAuthority('Admin', 'Manager')")
+    public ResponseEntity<ResponseWrapper> updateProject(@RequestBody ProjectDTO projectDTO) throws TicketingProjectException {
+        ProjectDTO updatedProject = projectService.update(projectDTO);
+        return ResponseEntity.ok(new ResponseWrapper("Project is successfully created", updatedProject));
+    }
+
 }
