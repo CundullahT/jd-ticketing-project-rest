@@ -56,13 +56,29 @@ public class UserController {
 
     }
 
-    @GetMapping()
+    @GetMapping
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
     @Operation(summary = "Read All Users")
     @PreAuthorize("hasAuthority('Admin')")
     public ResponseEntity<ResponseWrapper> readAll(){
         List<UserDTO> result = userService.listAllUsers();
         return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved users", result));
+    }
+
+    @GetMapping("/{username}")
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
+    @Operation(summary = "Read User By Id")
+    public ResponseEntity<ResponseWrapper> readByUsername(@PathVariable("username") String username){
+        UserDTO user = userService.findByUserName(username);
+        return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved user", user));
+    }
+
+    @PutMapping
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
+    @Operation(summary = "Update User")
+    public ResponseEntity<ResponseWrapper> updateUser(@RequestBody UserDTO user){
+        UserDTO updatedUser = userService.update(user);
+        return ResponseEntity.ok(new ResponseWrapper("Successfully updated", updatedUser));
     }
 
     private MailDTO createEmail(UserDTO userDTO) {
