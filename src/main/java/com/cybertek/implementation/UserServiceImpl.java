@@ -45,11 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findById(Long id) throws TicketingProjectException {
 
-        User user = userRepository.findById(id).orElse(null);
-
-        if (user == null) {
-            throw new TicketingProjectException("This User Does Not Exist");
-        }
+        User user = userRepository.findById(id).orElseThrow(() -> new TicketingProjectException("This User Does Not Exist"));
 
         return mapperUtil.convert(user, new UserDTO());
 
