@@ -12,14 +12,14 @@ spring:
     username: postgres
     password: Ct385223@
     driver-class-name: org.postgresql.Driver
-    initialization-mode: always
+#    initialization-mode: always
     data: classpath:data.sql
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: false
   mail:
     host: smtp.gmail.com
@@ -36,8 +36,8 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
-    username: cybertekschool.email@gmail.com
-    password: Cybertekschool@2020
+    username: cemilmeric23@gmail.com
+    password: ypjtzdysntuqapln
 security:
   jwt:
     secret-key: cybertek
