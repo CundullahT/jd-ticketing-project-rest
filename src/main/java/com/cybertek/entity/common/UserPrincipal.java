@@ -11,7 +11,7 @@ import java.util.List;
 
 public class UserPrincipal implements UserDetails {
 
-    private User user;
+    private final User user;
 
     public UserPrincipal(User user) {
         this.user = user;
@@ -25,13 +25,14 @@ public class UserPrincipal implements UserDetails {
         GrantedAuthority authority = new SimpleGrantedAuthority(this.user.getRole().getDescription());
         authorityList.add(authority);
 
-//         ManyToMany
+//        @ManyToMany
 //        this.user.getRoles().forEach(role ->{
 //            GrantedAuthority authority = new SimpleGrantedAuthority(this.user.getRole().getDescription());
 //            authorityList.add(authority);
-//        })
+//        });
 
         return authorityList;
+
     }
 
     @Override
@@ -64,7 +65,8 @@ public class UserPrincipal implements UserDetails {
         return this.user.isEnabled();
     }
 
-    public Long getId(){
+    public Long getId() {
         return this.user.getId();
     }
+
 }

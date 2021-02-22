@@ -11,12 +11,17 @@ import java.util.List;
 public interface TaskService {
 
     TaskDTO findById(Long id);
+
     List<TaskDTO> listAllTasks();
+
     Task save(TaskDTO dto);
+
     void update(TaskDTO dto);
+
     void delete(long id);
 
     int totalNonCompletedTasks(String projectCode);
+
     int totalCompletedTasks(String projectCode);
 
     void deleteByProject(ProjectDTO project);

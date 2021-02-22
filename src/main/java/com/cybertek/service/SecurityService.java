@@ -11,4 +11,5 @@ public interface SecurityService extends UserDetailsService {
     UserDetails loadUserByUsername(String s) throws UsernameNotFoundException;
 
     User loadUser(String param);
+
 }

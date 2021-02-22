@@ -9,9 +9,13 @@ import java.util.List;
 public interface UserService {
 
     List<UserDTO> listAllUsers();
+
     UserDTO findByUserName(String username);
+
     UserDTO save(UserDTO dto) throws TicketingProjectException;
+
     UserDTO update(UserDTO dto);
+
     void delete(String username) throws TicketingProjectException;
 
     void deleteByUserName(String username);
@@ -21,6 +25,5 @@ public interface UserService {
     Boolean checkIfUserCanBeDeleted(User user);
 
     UserDTO confirm(User user);
-
 
 }

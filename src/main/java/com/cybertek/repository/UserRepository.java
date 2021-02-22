@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUserName(String username);
 
@@ -16,4 +16,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     void deleteByUserName(String username);
 
     List<User> findAllByRoleDescriptionIgnoreCase(String description);
+
 }
