@@ -73,4 +73,13 @@ public class ProjectController {
         return ResponseEntity.ok(new ResponseWrapper("Project is successfully deleted"));
     }
 
+    @PutMapping("/complete/{projectCode}")
+    @Operation(summary = "Complete Project")
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
+    @PreAuthorize("hasAuthority('Manager')")
+    public ResponseEntity<ResponseWrapper> completeProject(@PathVariable("projectCode") String projectCode) throws TicketingProjectException {
+        ProjectDTO projectDTO = projectService.complete(projectCode);
+        return ResponseEntity.ok(new ResponseWrapper("Project is successfully updated (completed)", projectDTO));
+    }
+
 }
