@@ -101,11 +101,8 @@ public class TaskServiceImpl implements TaskService {
 
 
     public List<TaskDTO> listAllByProject(ProjectDTO projectDTO) {
-
         List<Task> list = taskRepository.findAllByProject(mapperUtil.convert(projectDTO, new Project()));
-
         return list.stream().map(obj -> mapperUtil.convert(obj, new TaskDTO())).collect(Collectors.toList());
-
     }
 
     @Override

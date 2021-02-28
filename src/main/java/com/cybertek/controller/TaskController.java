@@ -9,6 +9,7 @@ import com.cybertek.service.ProjectService;
 import com.cybertek.service.TaskService;
 import com.cybertek.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +19,7 @@ import java.util.List;
 
 
 @RestController
+@Tag(name = "Task Controller", description = "Task API")
 @RequestMapping("/api/v1/task")
 @RequiredArgsConstructor
 public class TaskController {
