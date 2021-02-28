@@ -8,7 +8,7 @@ import com.cybertek.entity.ConfirmationToken;
 import com.cybertek.entity.ResponseWrapper;
 import com.cybertek.entity.User;
 import com.cybertek.exception.TicketingProjectException;
-import com.cybertek.mapper.MapperUtil;
+import com.cybertek.util.MapperUtil;
 import com.cybertek.service.ConfirmationTokenService;
 import com.cybertek.service.RoleService;
 import com.cybertek.service.UserService;

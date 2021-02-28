@@ -3,7 +3,7 @@ package com.cybertek.implementation;
 import com.cybertek.dto.RoleDTO;
 import com.cybertek.entity.Role;
 import com.cybertek.exception.TicketingProjectException;
-import com.cybertek.mapper.MapperUtil;
+import com.cybertek.util.MapperUtil;
 import com.cybertek.repository.RoleRepository;
 import com.cybertek.service.RoleService;
 import org.springframework.stereotype.Service;
