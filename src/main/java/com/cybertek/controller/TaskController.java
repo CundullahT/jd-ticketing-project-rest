@@ -86,7 +86,7 @@ public class TaskController {
         return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved non completed tasks.", taskService.listAllTasksByStatusIsNot(Status.COMPLETE)));
     }
 
-    @PutMapping
+    @PutMapping("/employee/update")
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, please try again!")
     @Operation(summary = "")
     @PreAuthorize("hasAuthority('Employee')")
