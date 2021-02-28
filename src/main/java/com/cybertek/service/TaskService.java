@@ -5,12 +5,13 @@ import com.cybertek.dto.TaskDTO;
 import com.cybertek.entity.Task;
 import com.cybertek.entity.User;
 import com.cybertek.enums.Status;
+import com.cybertek.exception.TicketingProjectException;
 
 import java.util.List;
 
 public interface TaskService {
 
-    TaskDTO findById(Long id);
+    TaskDTO findById(Long id) throws TicketingProjectException;
 
     List<TaskDTO> listAllTasks();
 

@@ -5,6 +5,8 @@ import com.cybertek.dto.TaskDTO;
 import com.cybertek.entity.Task;
 import com.cybertek.entity.User;
 import com.cybertek.enums.Status;
+import com.cybertek.exception.TicketingProjectException;
+import com.cybertek.mapper.MapperUtil;
 import com.cybertek.mapper.ProjectMapper;
 import com.cybertek.mapper.TaskMapper;
 import com.cybertek.repository.TaskRepository;
@@ -22,39 +24,25 @@ import java.util.stream.Collectors;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-    private final TaskMapper taskMapper;
-    private final ProjectMapper projectMapper;
     private final UserRepository userRepository;
+    private final MapperUtil mapperUtil;
 
-    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper, ProjectMapper projectMapper, UserRepository userRepository) {
+    public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository, MapperUtil mapperUtil) {
         this.taskRepository = taskRepository;
-        this.taskMapper = taskMapper;
-        this.projectMapper = projectMapper;
+        this.mapperUtil = mapperUtil;
         this.userRepository = userRepository;
     }
 
     @Override
-    public TaskDTO findById(Long id) {
-
-        Optional<Task> task = taskRepository.findById(id);
-
-        if (task.isPresent()) {
-            return taskMapper.convertToDto(task.get());
-        }
-
-        return null;
-
+    public TaskDTO findById(Long id) throws TicketingProjectException {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TicketingProjectException("Task does not exist."));
+        return mapperUtil.convert(task, new TaskDTO());
     }
 
     @Override
     public List<TaskDTO> listAllTasks() {
-
         List<Task> list = taskRepository.findAll();
-
-        return list.stream().map(taskMapper::convertToDto).collect(Collectors.toList());
-
-        //return list.stream().map(obj ->{return taskMapper.convertToDto(obj);}).collect(Collectors.toList());
-
+        return list.stream().map(task -> mapperUtil.convert(task, new TaskDTO())).collect(Collectors.toList());
     }
 
     @Override
@@ -63,7 +51,7 @@ public class TaskServiceImpl implements TaskService {
         dto.setTaskStatus(Status.OPEN);
         dto.setAssignedDate(LocalDate.now());
 
-        Task task = taskMapper.convertToEntity(dto);
+        Task task = mapperUtil.convert(dto, new Task());
         return taskRepository.save(task);
 
     }
