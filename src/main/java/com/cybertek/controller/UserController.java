@@ -20,6 +20,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -31,13 +32,11 @@ public class UserController {
     private String BASE_URL;
 
     private final UserService userService;
-    private final RoleService roleService;
     private final MapperUtil mapperUtil;
     private final ConfirmationTokenService confirmationTokenService;
 
-    public UserController(UserService userService, RoleService roleService, MapperUtil mapperUtil, ConfirmationTokenService confirmationTokenService) {
+    public UserController(UserService userService, MapperUtil mapperUtil, ConfirmationTokenService confirmationTokenService) {
         this.userService = userService;
-        this.roleService = roleService;
         this.mapperUtil = mapperUtil;
         this.confirmationTokenService = confirmationTokenService;
     }
@@ -68,7 +67,7 @@ public class UserController {
     @GetMapping("/{username}")
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
     @Operation(summary = "Read User By Username")
-    public ResponseEntity<ResponseWrapper> readByUsername(@PathVariable("username") String username){
+    public ResponseEntity<ResponseWrapper> readByUsername(@PathVariable("username") String username) throws AccessDeniedException {
         UserDTO user = userService.findByUserName(username);
         return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved user", user));
     }
@@ -76,7 +75,7 @@ public class UserController {
     @PutMapping
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
     @Operation(summary = "Update User")
-    public ResponseEntity<ResponseWrapper> updateUser(@RequestBody UserDTO user) throws TicketingProjectException {
+    public ResponseEntity<ResponseWrapper> updateUser(@RequestBody UserDTO user) throws TicketingProjectException, AccessDeniedException {
         UserDTO updatedUser = userService.update(user);
         return ResponseEntity.ok(new ResponseWrapper("Successfully updated", updatedUser));
     }
