@@ -2,7 +2,6 @@ package com.cybertek.controller;
 
 import com.cybertek.annotation.DefaultExceptionMessage;
 import com.cybertek.dto.ProjectDTO;
-import com.cybertek.entity.Project;
 import com.cybertek.entity.ResponseWrapper;
 import com.cybertek.exception.TicketingProjectException;
 import com.cybertek.service.ProjectService;
@@ -28,11 +27,12 @@ public class ProjectController {
         this.userService = userService;
     }
 
+
     @GetMapping
-    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
     @Operation(summary = "Read All Projects")
+    @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
     @PreAuthorize("hasAnyAuthority('Admin', 'Manager')")
-    public ResponseEntity<ResponseWrapper> readAll(){
+    public ResponseEntity<ResponseWrapper> readAll() {
         List<ProjectDTO> projectDTOList = projectService.listAllProjects();
         return ResponseEntity.ok(new ResponseWrapper("Projects are retrieved", projectDTOList));
     }
@@ -41,7 +41,7 @@ public class ProjectController {
     @Operation(summary = "Read By Project Code")
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
     @PreAuthorize("hasAnyAuthority('Admin', 'Manager')")
-    public ResponseEntity<ResponseWrapper> readByProjectCode(@PathVariable("projectCode") String projectCode){
+    public ResponseEntity<ResponseWrapper> readByProjectCode(@PathVariable("projectCode") String projectCode) {
         ProjectDTO projectDTO = projectService.getByProjectCode(projectCode);
         return ResponseEntity.ok(new ResponseWrapper("Project is retrieved", projectDTO));
     }
@@ -61,7 +61,7 @@ public class ProjectController {
     @PreAuthorize("hasAnyAuthority('Admin', 'Manager')")
     public ResponseEntity<ResponseWrapper> updateProject(@RequestBody ProjectDTO projectDTO) throws TicketingProjectException {
         ProjectDTO updatedProject = projectService.update(projectDTO);
-        return ResponseEntity.ok(new ResponseWrapper("Project is successfully created", updatedProject));
+        return ResponseEntity.ok(new ResponseWrapper("Project is updated", updatedProject));
     }
 
     @DeleteMapping("/{projectCode}")

@@ -20,8 +20,9 @@ import java.util.List;
 @Service
 public class SecurityServiceImpl implements SecurityService {
 
-    private final UserService userService;
-    private final MapperUtil mapperUtil;
+
+    private UserService userService;
+    private MapperUtil mapperUtil;
 
     public SecurityServiceImpl(UserService userService, MapperUtil mapperUtil) {
         this.userService = userService;
@@ -34,22 +35,21 @@ public class SecurityServiceImpl implements SecurityService {
 
         UserDTO user = userService.findByUserName(s);
 
-        if (user == null) {
+        if(user==null){
             throw new UsernameNotFoundException("This user does not exists");
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getId().toString(), user.getPassWord(), listAuthorities(user));
+        return new org.springframework.security.core.userdetails.User(user.getId().toString(),user.getPassWord(),listAuthorities(user));
 
     }
 
     @Override
     public User loadUser(String param) throws AccessDeniedException {
-        UserDTO user = userService.findByUserName(param);
-        return mapperUtil.convert(user, new User());
+        UserDTO user =  userService.findByUserName(param);
+        return mapperUtil.convert(user,new User());
     }
 
-    private Collection<? extends GrantedAuthority> listAuthorities(UserDTO user) {
-
+    private Collection<? extends GrantedAuthority> listAuthorities(UserDTO user){
         List<GrantedAuthority> authorityList = new ArrayList<>();
 
         GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().getDescription());
@@ -57,6 +57,6 @@ public class SecurityServiceImpl implements SecurityService {
 
         return authorityList;
 
-    }
 
+    }
 }

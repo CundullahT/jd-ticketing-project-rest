@@ -19,7 +19,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Where(clause = "is_deleted=false")
+@Where(clause="is_deleted=false")
 public class ConfirmationToken extends BaseEntity {
 
     private String token;
@@ -30,15 +30,16 @@ public class ConfirmationToken extends BaseEntity {
 
     private LocalDate expireDate;
 
-    public Boolean isTokenValid(LocalDate date) {
+    public Boolean isTokenValid(LocalDate date){
         LocalDate now = LocalDate.now();
         return date.isEqual(now) || date.isEqual(now.plusDays(1));
     }
 
-    public ConfirmationToken(User user) {
-        this.user = user;
-        expireDate = LocalDate.now().plusDays(1);
-        token = UUID.randomUUID().toString();
+    public ConfirmationToken(User user){
+        this.user=user;
+        expireDate=LocalDate.now().plusDays(1);
+        token= UUID.randomUUID().toString();
     }
+
 
 }

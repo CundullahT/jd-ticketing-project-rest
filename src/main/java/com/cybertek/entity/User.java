@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
@@ -16,12 +17,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 @Where(clause = "is_deleted=false")
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer"}, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"},ignoreUnknown = true)
 public class User extends BaseEntity {
 
     private String firstName;
     private String lastName;
     private String userName;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passWord;
     private Boolean enabled;

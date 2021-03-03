@@ -14,8 +14,9 @@ import java.util.stream.Collectors;
 @Service
 public class RoleServiceImpl implements RoleService {
 
-    private final RoleRepository roleRepository;
-    private final MapperUtil mapperUtil;
+
+    private RoleRepository roleRepository;
+    private MapperUtil mapperUtil;
 
     public RoleServiceImpl(RoleRepository roleRepository, MapperUtil mapperUtil) {
         this.roleRepository = roleRepository;
@@ -25,13 +26,12 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleDTO> listAllRoles() {
         List<Role> list = roleRepository.findAll();
-        return list.stream().map(obj -> mapperUtil.convert(obj, new RoleDTO())).collect(Collectors.toList());
+        return list.stream().map(obj -> mapperUtil.convert(obj,new RoleDTO())).collect(Collectors.toList());
     }
 
     @Override
     public RoleDTO findById(Long id) throws TicketingProjectException {
-        Role role = roleRepository.findById(id).orElseThrow(() -> new TicketingProjectException("Role does not exist."));
-        return mapperUtil.convert(role, new RoleDTO());
+        Role role = roleRepository.findById(id).orElseThrow(() -> new TicketingProjectException("Role does not exists"));
+        return mapperUtil.convert(role,new RoleDTO());
     }
-
 }

@@ -1,6 +1,5 @@
 package com.cybertek.controller;
 
-
 import com.cybertek.annotation.DefaultExceptionMessage;
 import com.cybertek.dto.MailDTO;
 import com.cybertek.dto.UserDTO;
@@ -33,40 +32,39 @@ public class UserController {
 
     private final UserService userService;
     private final MapperUtil mapperUtil;
+    private final RoleService roleService;
     private final ConfirmationTokenService confirmationTokenService;
 
-    public UserController(UserService userService, MapperUtil mapperUtil, ConfirmationTokenService confirmationTokenService) {
+    public UserController(UserService userService, MapperUtil mapperUtil, RoleService roleService, ConfirmationTokenService confirmationTokenService) {
         this.userService = userService;
         this.mapperUtil = mapperUtil;
+        this.roleService = roleService;
         this.confirmationTokenService = confirmationTokenService;
     }
 
-    @PostMapping("/create-user")
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
-    @Operation(summary = "Create New Account")
+    @PostMapping("/create-user")
+    @Operation(summary = "Create new account")
     @PreAuthorize("hasAuthority('Admin')")
     public ResponseEntity<ResponseWrapper> doRegister(@RequestBody UserDTO userDTO) throws TicketingProjectException {
-
         UserDTO createdUser = userService.save(userDTO);
-
         sendEmail(createEmail(createdUser));
-
         return ResponseEntity.ok(new ResponseWrapper("User has been created!", createdUser));
-
     }
 
     @GetMapping
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
     @Operation(summary = "Read All Users")
     @PreAuthorize("hasAuthority('Admin')")
-    public ResponseEntity<ResponseWrapper> readAll(){
+    public ResponseEntity<ResponseWrapper> readAll() {
         List<UserDTO> result = userService.listAllUsers();
         return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved users", result));
     }
 
     @GetMapping("/{username}")
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
-    @Operation(summary = "Read User By Username")
+    @Operation(summary = "Read by username")
+    //Only admin should see other profiles or current user can see his/her profile
     public ResponseEntity<ResponseWrapper> readByUsername(@PathVariable("username") String username) throws AccessDeniedException {
         UserDTO user = userService.findByUserName(username);
         return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved user", user));
@@ -91,11 +89,11 @@ public class UserController {
 
     @GetMapping("/role")
     @DefaultExceptionMessage(defaultMessage = "Something went wrong, try again!")
-    @Operation(summary = "Read Users By Role")
-    @PreAuthorize("hasAnyAuthority('Admin', 'Manager')")
-    public ResponseEntity<ResponseWrapper> readByRole(@RequestParam String role){
+    @Operation(summary = "Read by role")
+    @PreAuthorize("hasAnyAuthority('Admin','Manager')")
+    public ResponseEntity<ResponseWrapper> readByRole(@RequestParam String role) {
         List<UserDTO> userList = userService.listAllByRole(role);
-        return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved users by role", userList));
+        return ResponseEntity.ok(new ResponseWrapper("Successfully read users by role", userList));
     }
 
     private MailDTO createEmail(UserDTO userDTO) {

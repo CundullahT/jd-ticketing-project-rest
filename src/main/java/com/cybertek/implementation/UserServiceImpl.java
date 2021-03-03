@@ -80,39 +80,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO update(UserDTO dto) throws TicketingProjectException, AccessDeniedException {
 
-        //  Find current user
+        //Find current user
         User user = userRepository.findByUserName(dto.getUserName());
 
         if (user == null) {
             throw new TicketingProjectException("User Does Not Exists");
         }
 
-        //  Map update user dto to entity object
+        //Map update user dto to entity object
         User convertedUser = mapperUtil.convert(dto, new User());
-
         convertedUser.setPassWord(passwordEncoder.encode(convertedUser.getPassWord()));
 
         if (!user.getEnabled()) {
-            throw new TicketingProjectException("User is not confirmed.");
+            throw new TicketingProjectException("User is not confirmed");
         }
 
         checkForAuthorities(user);
 
         convertedUser.setEnabled(true);
 
-        //  Set id to the converted object
+        //set id to the converted object
         convertedUser.setId(user.getId());
-
-        //  Save updated user
+        //save updated user
         userRepository.save(convertedUser);
 
         return findByUserName(dto.getUserName());
-
     }
 
     @Override
     public void delete(String username) throws TicketingProjectException {
-
         User user = userRepository.findByUserName(username);
 
         if (user == null) {
@@ -120,17 +116,16 @@ public class UserServiceImpl implements UserService {
         }
 
         if (!checkIfUserCanBeDeleted(user)) {
-            throw new TicketingProjectException("User can not be deleted. It is linked by a project or task");
+            throw new TicketingProjectException("User can not be deleted. It is linked by a project ot task");
         }
 
         user.setUserName(user.getUserName() + "-" + user.getId());
 
         user.setIsDeleted(true);
         userRepository.save(user);
-
     }
 
-    //  Hard Delete
+    //hard delete
     @Override
     public void deleteByUserName(String username) {
         userRepository.deleteByUserName(username);
@@ -158,7 +153,6 @@ public class UserServiceImpl implements UserService {
             default:
                 return true;
         }
-
     }
 
     @Override
@@ -168,22 +162,19 @@ public class UserServiceImpl implements UserService {
         User confirmedUser = userRepository.save(user);
 
         return mapperUtil.convert(confirmedUser, new UserDTO());
-
     }
 
     private void checkForAuthorities(User user) throws AccessDeniedException {
 
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication != null && authentication.getName().equals("anonymousUser")) {
+        if (authentication != null && !authentication.getName().equals("anonymousUser")) {
 
             Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
             if (!(authentication.getName().equals(user.getId().toString()) || roles.contains("Admin"))) {
-                throw new AccessDeniedException("Access Denied!");
+                throw new AccessDeniedException("Access is denied");
             }
         }
-
     }
-
 }

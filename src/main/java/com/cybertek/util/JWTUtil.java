@@ -22,14 +22,11 @@ public class JWTUtil {
     public String generateToken(User user) {
 
         Map<String, Object> claims = new HashMap<>();
-
         claims.put("username", user.getUserName());
         claims.put("id", user.getId());
         claims.put("firstName", user.getFirstName());
         claims.put("lastName", user.getLastName());
-
         return createToken(claims, user.getUserName());
-
     }
 
     private String createToken(Map<String, Object> claims, String username) {
