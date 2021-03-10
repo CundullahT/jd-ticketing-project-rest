@@ -32,7 +32,7 @@ class ProjectControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJmaXJzdE5hbWUiOiJhZG1pbiIsImxhc3ROYW1lIjoiYWRtaW4iLCJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpZCI6MSwiZXhwIjoxNjE1MDk2ODIwLCJpYXQiOjE2MTUwNjA4MjAsInVzZXJuYW1lIjoiYWRtaW5AYWRtaW4uY29tIn0.IS849CwJ9YAeTV-_pro6RIzBoKA9TaUG-pL30W6Yk6E";
+    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJmaXJzdE5hbWUiOiJhZG1pbiIsImxhc3ROYW1lIjoiYWRtaW4iLCJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpZCI6MSwiZXhwIjoxNjE1MzcwOTQwLCJpYXQiOjE2MTUzMzQ5NDAsInVzZXJuYW1lIjoiYWRtaW5AYWRtaW4uY29tIn0.pPt6HboY3qTC04hAR5q8VACPnx_XFXV0pM-wGWLRjdo";
 
     static UserDTO userDTO;
     static ProjectDTO projectDTO;
@@ -53,7 +53,7 @@ class ProjectControllerTest {
                 .build();
 
         projectDTO = ProjectDTO.builder()
-                .projectCode("Api1")
+                .projectCode("Api2")
                 .projectName("Api")
                 .assignedManager(userDTO)
                 .startDate(LocalDate.now())
@@ -94,7 +94,7 @@ class ProjectControllerTest {
                     .accept(MediaType.APPLICATION_JSON)
                     .content(toJsonString(projectDTO))
                     .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("projectCode").isNotEmpty());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.projectCode").isNotEmpty());
     }
 
     protected static String toJsonString(final Object obj) {
