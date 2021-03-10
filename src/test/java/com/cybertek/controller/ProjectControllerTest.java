@@ -53,7 +53,7 @@ class ProjectControllerTest {
                 .build();
 
         projectDTO = ProjectDTO.builder()
-                .projectCode("Api2")
+                .projectCode("Api1")
                 .projectName("Api")
                 .assignedManager(userDTO)
                 .startDate(LocalDate.now())
@@ -63,7 +63,6 @@ class ProjectControllerTest {
                 .completeTaskCounts(0)
                 .unfinishedTaskCounts(0)
                 .build();
-
     }
 
     @Test
@@ -76,25 +75,51 @@ class ProjectControllerTest {
     public void givenToken_getAllProjects() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders
-                    .get("/api/v1/project")
-                    .header("Authorization", token)
-                    .accept(MediaType.APPLICATION_JSON))
+                .get("/api/v1/project")
+                .header("Authorization", token)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].projectCode").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].assignedManager.userName").isNotEmpty());
-
     }
 
     @Test
     public void givenToken_createProject() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders
-                    .post("/api/v1/project")
-                    .header("Authorization", token)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .content(toJsonString(projectDTO))
-                    .contentType(MediaType.APPLICATION_JSON))
+                .post("/api/v1/project")
+                .header("Authorization", token)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(toJsonString(projectDTO))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.projectCode").isNotEmpty());
+    }
+
+    @Test
+    public void givenToken_updateProject() throws Exception {
+
+        projectDTO.setId(2L);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/api/v1/project")
+                .header("Authorization", token)
+                .content(toJsonString(projectDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("message").value("Project is updated"));
+    }
+
+    @Test
+    public void givenToken_deleteProject() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .delete("/api/v1/project/" + projectDTO.getProjectCode())
+                .header("Authorization", token)
+                .content(toJsonString(projectDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     protected static String toJsonString(final Object obj) {
